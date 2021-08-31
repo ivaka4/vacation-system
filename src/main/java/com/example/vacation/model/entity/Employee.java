@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,12 +28,17 @@ public class Employee extends BaseEntity {
     private String lastName;
     @Column(name = "register_on", nullable = false)
     private LocalDateTime registerOn;
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone")
     private Integer phone;
+    @Column(name = "active")
+    private boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "user")
+    private List<LeaveEntity> leaveEntities;
 }

@@ -1,6 +1,7 @@
 package com.example.vacation.model.entity;
 
 import com.example.vacation.model.enums.RoleEnum;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 //@Getter
 //@Setter
 //@NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 public class Authority extends BaseEntity implements GrantedAuthority {
     @Enumerated(EnumType.STRING)
     private RoleEnum authority;
