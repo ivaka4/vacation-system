@@ -153,6 +153,11 @@
                     <div class="clearfix"></div>
                 </a></li>
 
+                <li><a th:href="@{/user/all-users}"><i
+                        class="fa fa-users"></i> <span>All Users</span>
+                    <div class="clearfix"></div>
+                </a></li>
+
                 <li sec:authorize="hasAuthority('MANAGER')"><a th:href="@{/user/manage-users}"><i
                         class="fa fa-users"></i> <span>Manage Users</span>
                     <div class="clearfix"></div>

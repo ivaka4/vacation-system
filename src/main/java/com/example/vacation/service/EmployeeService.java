@@ -31,4 +31,6 @@ public interface EmployeeService extends UserDetailsService {
 
     void updateUser(EmployeeUpdateBinding employeeUpdateBinding);
 
+    List<EmployeeServiceModel> getActiveEmployees();
+
 }

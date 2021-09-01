@@ -145,12 +145,18 @@ public class EmployeeServiceImpl implements EmployeeService {
             } else {
                 employee.getAuthorities().add(authority);
             }
-        } else if (employeeUpdateBinding.getRole().equals("EMPLOYEE")){
+        } else if (employeeUpdateBinding.getRole().equals("EMPLOYEE")) {
             employee.getAuthorities().clear();
             employee.getAuthorities().add(authority);
         }
         this.employeeRepository.saveAndFlush(employee);
 
+    }
+
+    @Override
+    public List<EmployeeServiceModel> getActiveEmployees() {
+        return this.modelMapper.map(this.employeeRepository.findAllByActiveTrue(), new TypeToken<List<EmployeeServiceModel>>() {
+        }.getType());
     }
 
     @Override

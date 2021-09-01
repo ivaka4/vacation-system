@@ -129,5 +129,12 @@ public class UserController extends BaseController {
         return mav;
     }
 
+    @RequestMapping(value = "/user/all-users", method = RequestMethod.GET)
+    public ModelAndView allUsers(ModelAndView mav){
+        mav.addObject("users", this.employeeService.getActiveEmployees());
+        mav.setViewName("allUsers");
+        return mav;
+    }
+
 
 }

@@ -112,7 +112,12 @@
                            <div class="menu">
 									<ul id="menu" >
 										<li><a th:href="@{/user/home}"><i class="fa fa-home"></i> <span>Home</span><div class="clearfix"></div></a></li>
-										
+
+										<li><a th:href="@{/user/all-users}"><i
+												class="fa fa-users"></i> <span>All Users</span>
+											<div class="clearfix"></div>
+										</a></li>
+
 										<li sec:authorize="hasAuthority('MANAGER')"><a th:href="@{/user/manage-users}"><i class="fa fa-users"></i> <span>Manage Users</span><div class="clearfix"></div></a></li>
 										
 										<li sec:authorize="hasAuthority('MANAGER')"><a th:href="@{/user/manage-leaves}"><i class="fa fa-calendar-check-o"></i> <span>Manage Leaves</span><div class="clearfix"></div></a></li>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Edit User</title>
+    <title>Manage Users</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -22,6 +22,18 @@
     <!-- jQuery -->
     <script th:src="@{/js/jquery-2.2.0.min.js}"></script>
     <!-- //jQuery -->
+    <!-- tables -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/basictable.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery.basictable.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#table-two-axis').basictable();
+
+        });
+    </script>
+    <!-- //tables -->
     <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet'
           type='text/css'/>
     <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -29,7 +41,6 @@
     <link rel="stylesheet" th:href="@{/css/icon-font.min.css}" type='text/css'/>
     <!-- //lined-icons -->
     <link rel="shortcut icon" th:href="@{/img/favicon.png}">
-    <script th:src="@{/js/bootbox.min.js}"></script>
 </head>
 <body>
 <div class="page-container">
@@ -67,95 +78,40 @@
             </div>
             <!--heder end here-->
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/user/home}">Home</a> <i class="fa fa-angle-right"></i> Edit
-                    User
+                <li class="breadcrumb-item"><a th:href="@{/user/home}">Home</a> <i class="fa fa-angle-right"></i> Manage
+                    Users
                 </li>
             </ol>
+            <div class="agile-grids">
+                <!-- tables -->
+                <div class="alert alert-info" th:if="${(param.successMessage != null)}">
+                    <span th:text="${param.successMessage[0]}"></span>
+                </div>
+                <div class="agile-tables">
 
-            <div class="grid-form1">
-                <h3>Edit User : <span th:text="${userInfo.email}"></span></h3>
-                <div class="tab-content tab-pane active" id="horizontal-form">
+                    <h3>Manage Users</h3>
+                    <table id="table-two-axis" class="two-axis">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>E-mail</th>
+                            <th>Roles</th>
 
-                    <form class="form-horizontal" th:action="@{/user/manage-users/save-user-edit}"
-                          th:object="${userInfo}" method="post">
-
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Username :</label>
-                            <div class="col-sm-6">
-                                <input type="text" th:field="*{username}" name="username" placeholder="Username"
-                                       class="form-control1"/>
-                            </div>
-
-                            <label class="alert-danger col-sm-6 col-sm-offset-4"
-                                   th:each="error : ${#fields.errors('username')}"
-                                   th:text="${error}"></label>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">First Name :</label>
-                            <div class="col-sm-6">
-                                <input type="text" th:field="*{firstName}" name="firstName" placeholder="First Name"
-                                       class="form-control1"/>
-                            </div>
-
-                            <label class="alert-danger col-sm-6 col-sm-offset-4"
-                                   th:each="error : ${#fields.errors('firstName')}"
-                                   th:text="${error}"></label>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Last Name :</label>
-                            <div class="col-sm-6">
-                                <input type="text" th:field="*{lastName}" name="lastName" placeholder="Last Name"
-                                       class="form-control1"/>
-                            </div>
-
-                            <small class="alert-danger col-sm-6 col-sm-offset-4"
-                                   th:each="error : ${#fields.errors('lastName')}"
-                                   th:text="${error}"></small>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">E-mail :</label>
-                            <div class="col-sm-6">
-                                <input type="text" th:field="*{email}" name="email" placeholder="Email"
-                                       class="form-control1"/>
-                            </div>
-
-                            <small class="alert-danger col-sm-6 col-sm-offset-4"
-                                   th:each="error : ${#fields.errors('email')}"
-                                   th:text="${error}"></small>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Phone number :</label>
-                            <div class="col-sm-6">
-                                <input type="number" th:field="*{phone}" name="phone" placeholder="Phone number"
-                                       class="form-control1"/>
-                            </div>
-
-                            <small class="alert-danger col-sm-6 col-sm-offset-4"
-                                   th:each="error : ${#fields.errors('phone')}"
-                                   th:text="${error}"></small>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Role :</label>
-                            <div class="col-sm-6">
-                                <input type="radio" name="role" value="MANAGER" style="width: 20%;" checked="checked">Manager
-                                <input type="radio" name="role" value="HR" style="width: 20%;">HR
-                                <input type="radio" name="role" value="EMPLOYEE" style="width: 20%;">Employee
-                            </div>
-                        </div>
-                        <label class="alert-danger col-sm-6 col-sm-offset-4"></label>
-
-                        <div class="row col-sm-offset-4">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <a th:href="@{/user/manage-users}">
-                                <button type="button" class="btn btn-default">Cancel</button>
-                            </a>
-                        </div>
-                    </form>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user,iterStat : ${users}">
+                            <!-- <td th:text="${iterStat.count}"></td> -->
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:each="role : ${user.getAuthorities()}" th:text="*{role.getAuthority()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                 </div>
+                <!-- //table -->
             </div>
-
             <!-- script-for sticky-nav -->
             <script>
                 $(document).ready(function () {
@@ -172,11 +128,6 @@
                 });
             </script>
             <!-- /script-for sticky-nav -->
-            <!--inner block start here-->
-            <div class="inner-block">
-
-            </div>
-            <!--inner block end here-->
         </div>
     </div>
     <!--//content-inner-->
@@ -192,13 +143,12 @@
                     <div class="clearfix"></div>
                 </a></li>
 
-                <li><a th:href="@{/user/all-users}"><i
-                        class="fa fa-users"></i> <span>All Users</span>
-                    <div class="clearfix"></div>
-                </a></li>
-
                 <li sec:authorize="hasAuthority('MANAGER')"><a th:href="@{/user/manage-users}"><i
                         class="fa fa-users"></i> <span>Manage Users</span>
+                    <div class="clearfix"></div>
+                </a></li>
+                <li><a th:href="@{/user/all-users}"><i
+                        class="fa fa-users"></i> <span>All Users</span>
                     <div class="clearfix"></div>
                 </a></li>
 
@@ -245,7 +195,6 @@
         toggle = !toggle;
     });
 </script>
-
 <!--js -->
 <script th:src="@{/js/jquery.nicescroll.js}"></script>
 <script th:src="@{/js/scripts.js}"></script>

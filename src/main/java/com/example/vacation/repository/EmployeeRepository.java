@@ -29,4 +29,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Modifying
     @Query(value = "update employee set active=true where id=?", nativeQuery = true)
     public void unBlockUser(Long id);
+
+    List<Employee> findAllByActiveTrue();
 }
