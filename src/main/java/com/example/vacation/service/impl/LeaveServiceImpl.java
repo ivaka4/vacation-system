@@ -98,4 +98,10 @@ public class LeaveServiceImpl implements LeaveService {
         return this.modelMapper.map(this.leaveManageNativeRepo.getAllLeavesOnStatus(whereQuery), new TypeToken<List<LeaveManagerServiceModel>>() {
         }.getType());
     }
+
+    @Override
+    public List<LeaveManagerServiceModel> getAllAcceptedLeaves() {
+        return this.modelMapper.map(this.leaveRepository.getAllByAcceptRejectFlag(true), new TypeToken<List<LeaveManagerServiceModel>>() {
+        }.getType());
+    }
 }

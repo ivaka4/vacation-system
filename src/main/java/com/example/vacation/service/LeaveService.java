@@ -22,4 +22,6 @@ public interface LeaveService{
     List<LeaveManagerServiceModel> getAllLeaves();
 
     List<LeaveManagerServiceModel> getAllLeavesOnStatus(boolean pending, boolean accepted, boolean rejected);
+
+    List<LeaveManagerServiceModel> getAllAcceptedLeaves();
 }

@@ -15,4 +15,6 @@ public interface LeaveRepository extends JpaRepository<LeaveEntity ,Long> {
 
     @Query(nativeQuery = true, value = "select * from leave_entity where user_id=? order by id desc")
     public List<LeaveEntity> getAllLeavesOfUser(Long id);
+
+    List<LeaveEntity> getAllByAcceptRejectFlag(boolean type);
 }

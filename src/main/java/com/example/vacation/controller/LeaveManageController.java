@@ -122,4 +122,11 @@ public class LeaveManageController {
         mav.setViewName("myLeaves");
         return mav;
     }
+
+    @RequestMapping(value = "/user/leaves", method = RequestMethod.GET)
+    public ModelAndView showEmployeeLeaves(ModelAndView mav) {
+        mav.addObject("leavesList", this.leaveService.getAllAcceptedLeaves());
+        mav.setViewName("acceptedLeaves");
+        return mav;
+    }
 }
