@@ -6,6 +6,7 @@ import com.example.vacation.model.entity.Employee;
 import com.example.vacation.model.entity.LeaveEntity;
 import com.example.vacation.model.service.LeaveManagerServiceModel;
 import com.example.vacation.repository.EmployeeRepository;
+import com.example.vacation.repository.LeaveNativeSqlRepo;
 import com.example.vacation.repository.LeaveRepository;
 import com.example.vacation.service.LeaveService;
 import com.example.vacation.util.Tools;
@@ -22,13 +23,15 @@ public class LeaveServiceImpl implements LeaveService {
     private final LeaveRepository leaveRepository;
     private final ModelMapper modelMapper;
     private final EmployeeRepository employeeRepository;
+    private final LeaveNativeSqlRepo leaveManageNativeRepo;
     private final Tools tools;
 
     @Autowired
-    public LeaveServiceImpl(LeaveRepository leaveRepository, ModelMapper modelMapper, EmployeeRepository employeeRepository, Tools tools) {
+    public LeaveServiceImpl(LeaveRepository leaveRepository, ModelMapper modelMapper, EmployeeRepository employeeRepository, LeaveNativeSqlRepo leaveManageNativeRepo, Tools tools) {
         this.leaveRepository = leaveRepository;
         this.modelMapper = modelMapper;
         this.employeeRepository = employeeRepository;
+        this.leaveManageNativeRepo = leaveManageNativeRepo;
         this.tools = tools;
     }
 
@@ -55,8 +58,13 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<LeaveManagerServiceModel> getAllLeavesOfEmployee(Long username) {
-        return null;
+    public List<LeaveManagerServiceModel> getAllLeavesOfEmployee() {
+        Employee employee = this.employeeRepository.findEmployeeByUsername(this.tools.getLoggedUser()).orElse(null);
+        if (employee == null) {
+            throw new EmployeeRegistrationException("There is not employee with this id");
+        }
+        return this.modelMapper.map(leaveRepository.getAllLeavesOfUser(employee.getId()), new TypeToken<List<LeaveManagerServiceModel>>() {
+        }.getType());
     }
 
     @Override
@@ -68,5 +76,26 @@ public class LeaveServiceImpl implements LeaveService {
     @Transactional
     public void updateLeaveEntity(LeaveManagerServiceModel leaveManagerServiceModel) {
         this.leaveRepository.saveAndFlush(this.modelMapper.map(leaveManagerServiceModel, LeaveEntity.class));
+    }
+
+    @Override
+    public List<LeaveManagerServiceModel> getAllLeaves() {
+        return this.modelMapper.map(this.leaveRepository.findAll(), new TypeToken<List<LeaveManagerServiceModel>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<LeaveManagerServiceModel> getAllLeavesOnStatus(boolean pending, boolean accepted, boolean rejected) {
+        StringBuffer whereQuery = new StringBuffer();
+        if (pending)
+            whereQuery.append("active=true or ");
+        if (accepted)
+            whereQuery.append("(active=false and accept_reject_flag=true) or ");
+        if (rejected)
+            whereQuery.append("(active=false and accept_reject_flag=false) or ");
+
+        whereQuery.append(" 1=0");
+        return this.modelMapper.map(this.leaveManageNativeRepo.getAllLeavesOnStatus(whereQuery), new TypeToken<List<LeaveManagerServiceModel>>() {
+        }.getType());
     }
 }

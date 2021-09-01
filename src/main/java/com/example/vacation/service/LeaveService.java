@@ -12,10 +12,14 @@ public interface LeaveService{
 
     List<LeaveManagerServiceModel> getAllActiveLeave();
 
-    List<LeaveManagerServiceModel> getAllLeavesOfEmployee(Long username);
+    List<LeaveManagerServiceModel> getAllLeavesOfEmployee();
 
 
     LeaveManagerServiceModel getLeaveById(Long id);
 
     void updateLeaveEntity(LeaveManagerServiceModel leaveManagerServiceModel);
+
+    List<LeaveManagerServiceModel> getAllLeaves();
+
+    List<LeaveManagerServiceModel> getAllLeavesOnStatus(boolean pending, boolean accepted, boolean rejected);
 }
